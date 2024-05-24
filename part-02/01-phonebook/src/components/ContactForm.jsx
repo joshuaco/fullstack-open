@@ -23,15 +23,17 @@ function ContactForm({
       <div className="inputs">
         <label htmlFor="phone">Phone</label>
         <input
-          type="number"
+          type="text"
           name="phone"
           id="phone"
-          placeholder="12345"
+          placeholder="012-345-6789"
           value={phone}
           onChange={handleNumberChange}
         />
       </div>
-      <button type="submit">Add</button>
+      <button className="form-button" type="submit">
+        Add
+      </button>
     </form>
   );
 }

@@ -61,3 +61,18 @@ li {
   margin: 16px 0;
   font-weight: bold;
 }
+
+@media screen and (max-width: 560px) {
+  form {
+    flex-direction: column;
+  }
+
+  .inputs {
+    width: 100%;
+  }
+
+  .form-button {
+    align-self: center;
+    width: 60%;
+  }
+}
