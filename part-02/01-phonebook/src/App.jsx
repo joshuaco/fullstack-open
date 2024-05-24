@@ -109,7 +109,10 @@ function App() {
 
   return (
     <div>
-      <h1>PhoneBook</h1>
+      <header>
+        <img src="./book-user.svg" alt="phonebook" width="32" />
+        <h1>PhoneBook</h1>
+      </header>
       <Search filterPersons={filterPersons} />
 
       <h2>Add a new contact</h2>
