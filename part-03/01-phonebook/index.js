@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const Person = require('./models/person');
 let persons = require('./data/persons');
 
 const app = express();
@@ -32,7 +33,9 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons);
+  Person.find({}).then((result) => {
+    res.json(result);
+  });
 });
 
 app.get('/api/persons/:id', (req, res) => {
@@ -48,7 +51,6 @@ app.get('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
   const body = req.body;
-  const newID = Math.floor(Math.random() * 50000 + 10000);
 
   if (!body.name) {
     return res.status(400).json({
@@ -60,21 +62,29 @@ app.post('/api/persons', (req, res) => {
     });
   }
 
-  const samePerson = persons.find((person) => person.name === body.name);
+  const person = new Person({
+    name: body.name,
+    number: body.number
+  });
+
+  person.save().then((savedPerson) => {
+    res.json(savedPerson);
+  });
+
+  /* const samePerson = persons.find((person) => person.name === body.name);
 
   if (samePerson) {
     return res.status(400).json({ error: 'name must be unique' });
-  }
+  } */
 
-  const person = {
-    id: newID,
+  /* const person = {
     name: body.name,
     number: body.number
   };
 
   persons = persons.concat(person);
 
-  res.json(person);
+  res.json(person); */
 });
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -103,7 +113,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
