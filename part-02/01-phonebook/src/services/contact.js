@@ -23,10 +23,12 @@ async function create(newObject) {
       body: JSON.stringify(newObject)
     });
     const data = await response.json();
+    if (data.error) {
+      throw new Error(data.error);
+    }
     return data;
   } catch (e) {
-    alert('Error connecting to server, try again later');
-    return newObject;
+    throw new Error(e);
   }
 }
 
@@ -40,9 +42,12 @@ async function update(id, newObject) {
       body: JSON.stringify(newObject)
     });
     const data = await response.json();
+    if (data.error) {
+      throw new Error(data.error);
+    }
     return data;
   } catch (e) {
-    alert('Error updating contact');
+    throw new Error(e);
   }
 }
 

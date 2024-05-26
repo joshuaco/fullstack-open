@@ -64,7 +64,12 @@ function App() {
       number: phone
     };
 
-    create(newObject).then((data) => setPersons([...persons, data]));
+    create(newObject)
+      .then((data) => setPersons([...persons, data]))
+      .catch((e) => {
+        setMessage(e.message);
+        clearMessage();
+      });
 
     setNewName('');
     setPhone('');
@@ -86,9 +91,12 @@ function App() {
     const person = persons.find((person) => person.id === id);
     const updatedPerson = { ...person, number: newNumber };
 
-    update(id, updatedPerson).then((data) =>
-      setPersons(persons.map((p) => (p.id === id ? data : p)))
-    );
+    update(id, updatedPerson)
+      .then((data) => setPersons(persons.map((p) => (p.id === id ? data : p))))
+      .catch((e) => {
+        setMessage(e.message);
+        clearMessage();
+      });
     setNewName('');
     setPhone('');
   };

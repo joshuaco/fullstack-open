@@ -60,6 +60,7 @@ li {
   color: red;
   margin: 16px 0;
   font-weight: bold;
+  max-width: 500px;
 }
 
 @media screen and (max-width: 560px) {
