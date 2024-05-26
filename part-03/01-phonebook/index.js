@@ -1,11 +1,14 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const errorHandler = require('./errorHandler');
+const unknownEndpoint = require('./unknownEndpoint');
 const Person = require('./models/person');
 let persons = require('./data/persons');
 
 const app = express();
 
+app.use(express.static('dist'));
 app.use(express.json());
 app.use(cors());
 
@@ -15,38 +18,26 @@ app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms :body')
 );
 
-app.use(express.static('dist'));
-
-const requestLogger = (req, res, next) => {
-  console.log('Method:', req.method);
-  console.log('Path:', req.path);
-  console.log('Body:', req.body);
-  console.log('-----');
-  next(); // Jump to the next middleware.
-};
-
-//app.use(requestLogger);
-
 // endpoints
-app.get('/', (req, res) => {
-  res.send('<h1>PhoneBook</h1>');
-});
-
 app.get('/api/persons', (req, res) => {
   Person.find({}).then((result) => {
     res.json(result);
   });
 });
 
-app.get('/api/persons/:id', (req, res) => {
-  const id = +req.params.id;
-  const person = persons.find((person) => person.id === id);
-
-  if (person) {
-    res.json(person);
-  } else {
-    res.status(404).end();
-  }
+app.get('/api/persons/:id', (req, res, next) => {
+  Person.findById(req.params.id)
+    .then((person) => {
+      if (person) {
+        res.json(person);
+      } else {
+        res.status(404).end();
+      }
+    })
+    .catch((error) => {
+      // Sin parametros pasa al siguiente middleware, con parametros pasa al controlador de errores.
+      next(error);
+    });
 });
 
 app.post('/api/persons', (req, res) => {
@@ -87,12 +78,28 @@ app.post('/api/persons', (req, res) => {
   res.json(person); */
 });
 
-app.delete('/api/persons/:id', (req, res) => {
-  const id = +req.params.id;
+app.delete('/api/persons/:id', (req, res, next) => {
+  const id = req.params.id;
 
-  persons = persons.filter((person) => person.id !== id);
+  Person.findByIdAndDelete(id)
+    .then(() => res.status(204).end())
+    .catch((error) => next(error));
+});
 
-  res.status(204).end();
+app.put('/api/persons/:id', (req, res, next) => {
+  const body = req.body;
+  const { id } = req.params;
+
+  const person = {
+    name: body.name,
+    number: body.number
+  };
+
+  Person.findByIdAndUpdate(id, person, { new: true })
+    .then((updatedPerson) => {
+      res.json(updatedPerson);
+    })
+    .catch((error) => next(error));
 });
 
 app.get('/info', (req, res) => {
@@ -107,11 +114,8 @@ app.get('/info', (req, res) => {
   `);
 });
 
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' });
-};
-
 app.use(unknownEndpoint);
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 
