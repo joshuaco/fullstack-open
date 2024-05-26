@@ -103,15 +103,12 @@ app.put('/api/persons/:id', (req, res, next) => {
 });
 
 app.get('/info', (req, res) => {
-  const personsInfo = {
-    length: persons.length,
-    date: new Date()
-  };
-
-  res.send(`
-    <p>Phonebook has info for ${personsInfo.length} people</p>
-    <p>${personsInfo.date.toString()}</p>
-  `);
+  Person.countDocuments().then((count) => {
+    res.send(`
+      <p>Phonebook has info for ${count} people</p>
+      <p>${new Date().toString()}</p>
+    `);
+  });
 });
 
 app.use(unknownEndpoint);
