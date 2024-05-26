@@ -4,7 +4,6 @@ const cors = require('cors');
 const errorHandler = require('./errorHandler');
 const unknownEndpoint = require('./unknownEndpoint');
 const Person = require('./models/person');
-let persons = require('./data/persons');
 
 const app = express();
 
