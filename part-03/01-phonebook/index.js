@@ -40,7 +40,7 @@ app.get('/api/persons/:id', (req, res, next) => {
     });
 });
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const body = req.body;
 
   if (!body.name) {
@@ -58,24 +58,12 @@ app.post('/api/persons', (req, res) => {
     number: body.number
   });
 
-  person.save().then((savedPerson) => {
-    res.json(savedPerson);
-  });
-
-  /* const samePerson = persons.find((person) => person.name === body.name);
-
-  if (samePerson) {
-    return res.status(400).json({ error: 'name must be unique' });
-  } */
-
-  /* const person = {
-    name: body.name,
-    number: body.number
-  };
-
-  persons = persons.concat(person);
-
-  res.json(person); */
+  person
+    .save()
+    .then((savedPerson) => {
+      res.json(savedPerson);
+    })
+    .catch((error) => next(error));
 });
 
 app.delete('/api/persons/:id', (req, res, next) => {
@@ -91,11 +79,14 @@ app.put('/api/persons/:id', (req, res, next) => {
   const { id } = req.params;
 
   const person = {
-    name: body.name,
     number: body.number
   };
 
-  Person.findByIdAndUpdate(id, person, { new: true })
+  Person.findByIdAndUpdate(id, person, {
+    new: true,
+    runValidators: true,
+    context: 'query'
+  })
     .then((updatedPerson) => {
       res.json(updatedPerson);
     })
