@@ -1,0 +1,16 @@
+GET http://localhost:3003/api/blogs HTTP/1.1
+
+###
+
+POST http://localhost:3003/api/blogs HTTP/1.1
+Content-Type: application/json
+
+{ 
+  "title": "My First Travel to India and How I almost die there.", 
+  "author": "Traveler One", 
+  "url": "https://www.medium.com/@travelerone" 
+}
+
+###
+
+DELETE http://localhost:3003/api/blogs/6653cd3d4342e828ac71fbee HTTP/1.1
