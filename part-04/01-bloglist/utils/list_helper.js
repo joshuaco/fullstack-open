@@ -15,6 +15,7 @@ const favoriteBlog = (blogs) => {
   return likedBlog;
 };
 
+// Author with most blogs
 const mostBlogs = (blogs) => {
   if (blogs.length === 0) {
     return null;
@@ -35,6 +36,7 @@ const mostBlogs = (blogs) => {
   return { author: author[0], blogs: max };
 };
 
+// Author with most liked blogs
 const mostLikes = (blogs) => {
   if (blogs.length === 0) {
     return null;
