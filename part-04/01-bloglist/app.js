@@ -22,6 +22,7 @@ app.get('/info', (request, response) => {
   });
 });
 
+app.use(middleware.handleError);
 app.use(middleware.unknownEndpoint);
 
 module.exports = app;
