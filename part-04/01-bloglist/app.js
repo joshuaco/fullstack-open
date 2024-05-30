@@ -1,3 +1,4 @@
+require('express-async-errors');
 const { connect } = require('./database/mongo');
 const express = require('express');
 const cors = require('cors');
