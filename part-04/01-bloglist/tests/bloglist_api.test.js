@@ -12,13 +12,7 @@ const api = supertest(app);
 describe('test bloglist api', () => {
   beforeEach(async () => {
     await Blog.deleteMany({});
-
-    // Mongoose objects array
-    const blogObjects = helper.initialBlogs.map((blog) => new Blog(blog));
-    // Promise series of save operations
-    const promiseArray = blogObjects.map((blog) => blog.save());
-    // Transform a promise series into an unique promise
-    await Promise.all(promiseArray);
+    await Blog.insertMany(helper.initialBlogs);
   });
 
   test('blogs are returned as json', async () => {
@@ -108,9 +102,40 @@ describe('test bloglist api', () => {
     assert.strictEqual(blogToView.likes, 0);
   });
 
+  test('fails with statuscode 404 if blog does not exist', async () => {
+    const validNonExistingID = await helper.nonExistingID();
+    console.log(validNonExistingID);
+    await api.get(`/api/blogs/${validNonExistingID}`).expect(404);
+  });
+
+  test('fails with statuscode 400 if id is invalid', async () => {
+    const invalidID = '5a3d5da59070081a82a3445';
+
+    await api.get(`/api/blogs/${invalidID}`).expect(400);
+  });
+
+  test('likes can be updated', async () => {
+    const blogsAtStart = await helper.blogsInDB();
+    const blogToUpdate = blogsAtStart[0];
+    const updatedBlog = {
+      ...blogToUpdate,
+      likes: blogToUpdate.likes + 1
+    };
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+
+    const blogsAtEnd = await helper.blogsInDB();
+    const likes = blogsAtEnd.map((blog) => blog.likes);
+    assert.strictEqual(likes[0], blogsAtStart[0].likes + 1);
+  });
+
   test('a blog can be deleted', async () => {
     const blogsAtStart = await helper.blogsInDB();
-    const blogToDelete = blogsAtStart[0];
+    const blogToDelete = blogsAtStart[1];
 
     await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
 
