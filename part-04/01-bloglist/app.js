@@ -2,6 +2,7 @@ require('express-async-errors');
 const { connect } = require('./database/mongo');
 const express = require('express');
 const cors = require('cors');
+const usersRouter = require('./controllers/users');
 const blogRouter = require('./controllers/blogs');
 const middleware = require('./utils/middlewares');
 const Blog = require('./models/Blog');
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use(middleware.requestLogger);
 app.use('/api/blogs', blogRouter);
+app.use('/api/users', usersRouter);
 
 app.get('/info', (request, response) => {
   Blog.countDocuments().then((count) => {
