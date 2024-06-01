@@ -1,5 +1,6 @@
 const blogs = require('../mocks/blogs');
 const Blog = require('../models/Blog');
+const User = require('../models/User');
 
 const initialBlogs = [blogs[0], blogs[1]];
 
@@ -16,4 +17,9 @@ const blogsInDB = async () => {
   return blogs.map((blog) => blog.toJSON());
 };
 
-module.exports = { initialBlogs, nonExistingID, blogsInDB };
+const usersInDB = async () => {
+  const users = await User.find({});
+  return users.map((user) => user.toJSON());
+};
+
+module.exports = { initialBlogs, nonExistingID, blogsInDB, usersInDB };
