@@ -57,6 +57,24 @@ describe('when there is initially one user in db', () => {
 
     assert.strictEqual(usersAtEnd.length, usersAtStart.length);
   });
+
+  test('creation fails with proper statuscode and message if password is too short', async () => {
+    const usersAtStart = await helper.usersInDB();
+
+    const newUser = {
+      username: 'lukatier',
+      password: '123456'
+    };
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/);
+
+    const usersAtEnd = await helper.usersInDB();
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length);
+  });
 });
 
 after(async () => {

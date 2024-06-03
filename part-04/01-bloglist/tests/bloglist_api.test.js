@@ -9,10 +9,18 @@ const app = require('../app');
 
 const api = supertest(app);
 
+let token = null;
+
 describe('when there is initially some blogs saved', () => {
   beforeEach(async () => {
     await Blog.deleteMany({});
     await Blog.insertMany(helper.initialBlogs);
+
+    const response = await api
+      .post('/api/login')
+      .send({ username: 'root', password: 'sekret' });
+
+    token = response.body.token;
   });
 
   test('blogs are returned as json', async () => {
@@ -75,6 +83,7 @@ describe('when there is initially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .auth(token, { type: 'bearer' })
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/);
@@ -84,13 +93,27 @@ describe('when there is initially some blogs saved', () => {
       assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1);
     });
 
+    test('fails with status code 401 if token is missing', async () => {
+      const newBlog = blogs[3];
+
+      await api.post('/api/blogs').send(newBlog).expect(401);
+
+      const blogsAtEnd = await helper.blogsInDB();
+
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length);
+    });
+
     test('fail with status code 400 if data is invalid', async () => {
       const newBlog = {
         author: 'Robert C. Martin',
         likes: 1
       };
 
-      await api.post('/api/blogs').send(newBlog).expect(400);
+      await api
+        .post('/api/blogs')
+        .auth(token, { type: 'bearer' })
+        .send(newBlog)
+        .expect(400);
 
       const blogsAtEnd = await helper.blogsInDB();
       assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length);
@@ -101,6 +124,7 @@ describe('when there is initially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .auth(token, { type: 'bearer' })
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/);
@@ -122,6 +146,7 @@ describe('when there is initially some blogs saved', () => {
 
       await api
         .put(`/api/blogs/${updatedBlog.id}`)
+        .auth(token, { type: 'bearer' })
         .send(updatedBlog)
         .expect(200);
 
@@ -132,11 +157,15 @@ describe('when there is initially some blogs saved', () => {
   });
 
   describe('deletion of a blog', () => {
+    // TODO: fix this test, current status 401, blog doesn't have user ID
     test('succeeds with status code 203 if ID is valid', async () => {
       const blogsAtStart = await helper.blogsInDB();
       const blogToDelete = blogsAtStart[0];
 
-      await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+      await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .auth(token, { type: 'bearer' })
+        .expect(204);
 
       const blogsAtEnd = await helper.blogsInDB();
       assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1);
