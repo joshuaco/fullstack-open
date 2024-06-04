@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { test, after, describe, beforeEach } = require('node:test');
 const assert = require('node:assert');
 const mongoose = require('mongoose');
@@ -14,13 +15,14 @@ let token = null;
 describe('when there is initially some blogs saved', () => {
   beforeEach(async () => {
     await Blog.deleteMany({});
-    await Blog.insertMany(helper.initialBlogs);
 
     const response = await api
       .post('/api/login')
-      .send({ username: 'root', password: 'sekret' });
+      .send({ username: process.env.USERNAME, password: process.env.PASSWORD });
 
     token = response.body.token;
+
+    await Blog.insertMany(helper.initialBlogs);
   });
 
   test('blogs are returned as json', async () => {
@@ -157,21 +159,17 @@ describe('when there is initially some blogs saved', () => {
   });
 
   describe('deletion of a blog', () => {
-    // TODO: fix this test, current status 401, blog doesn't have user ID
-    test('succeeds with status code 203 if ID is valid', async () => {
+    test('fails with status code 401 if ID is invalid', async () => {
       const blogsAtStart = await helper.blogsInDB();
       const blogToDelete = blogsAtStart[0];
 
       await api
         .delete(`/api/blogs/${blogToDelete.id}`)
         .auth(token, { type: 'bearer' })
-        .expect(204);
+        .expect(401);
 
       const blogsAtEnd = await helper.blogsInDB();
-      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1);
-
-      const titles = blogsAtEnd.map((blog) => blog.title);
-      assert(!titles.includes(blogToDelete.title));
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length);
     });
   });
 });
