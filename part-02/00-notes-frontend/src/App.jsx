@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import { notes as initialNotes } from './mocks/notes';
 import Note from './components/Note';
 import './App.css';
-import { useState } from 'react';
 
 function App() {
   const [notes, setNotes] = useState(initialNotes);
