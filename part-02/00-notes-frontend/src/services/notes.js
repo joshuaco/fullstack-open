@@ -18,10 +18,6 @@ export async function updateNote(id, note) {
 }
 
 export async function deleteNote(id) {
-  try {
-    const response = await axios.delete(`http://localhost:3001/notes/${id}`);
-    return response;
-  } catch (e) {
-    alert(`Note not found`);
-  }
+  const response = await axios.delete(`http://localhost:3001/notes/${id}`);
+  return response;
 }

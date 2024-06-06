@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { updateNote, getNotes, createNote, deleteNote } from './services';
+import { updateNote, getNotes, createNote, deleteNote } from './services/notes';
 import Note from './components/Note';
+import Notification from './components/Notification';
+import Footer from './components/Footer';
 import './App.css';
 
 function App() {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
+  const [message, SetMessage] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,8 +30,13 @@ function App() {
       important: !note.important
     };
 
-    const response = await updateNote(changedNote.id, changedNote);
-    setNotes(notes.map((note) => (note.id !== id ? note : response)));
+    try {
+      const response = await updateNote(changedNote.id, changedNote);
+      setNotes(notes.map((note) => (note.id !== id ? note : response)));
+    } catch (e) {
+      alert(`The note '${note.content}' was already deleted from server`);
+      setNotes(notes.filter((note) => note.id !== id));
+    }
   };
 
   const addNote = async (event) => {
@@ -54,6 +62,7 @@ function App() {
 
     if (response.status === 200) {
       setNotes(notes.filter((note) => note.id !== id));
+      SetMessage('Note removed');
     }
   };
 
@@ -61,6 +70,8 @@ function App() {
     <>
       <div>
         <h1>Notes</h1>
+
+        {message && <Notification message={message} />}
 
         <div>
           <button onClick={() => setShowAll(!showAll)}>
@@ -83,6 +94,8 @@ function App() {
           <input type="text" value={newNote} onChange={handleNoteChange} />
           <button type="submit">Add Note</button>
         </form>
+
+        <Footer />
       </div>
     </>
   );
