@@ -20,6 +20,11 @@ function App() {
     fetchData();
   }, []);
 
+  if (!notes) {
+    return null;
+  }
+
+  console.log('render', notes.length, 'notes');
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
 
   const toggleImportanceOf = async (id) => {
