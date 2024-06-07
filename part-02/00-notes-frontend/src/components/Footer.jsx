@@ -2,7 +2,8 @@ const Footer = () => {
   const footerStyle = {
     color: 'white',
     fontStyle: 'italic',
-    fontSize: 16
+    fontSize: 16,
+    marginTop: 20
   };
 
   return (

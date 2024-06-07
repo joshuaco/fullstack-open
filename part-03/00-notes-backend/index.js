@@ -1,13 +1,13 @@
+require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 let notes = require('./db');
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
-
-app.get('/', (request, response) => {
-  response.send('<h1>Hello!</h1>');
-});
+app.use(express.static('dist'));
 
 app.get('/api/notes', (request, response) => {
   response.json(notes);
@@ -55,7 +55,7 @@ const generateID = () => {
   return maxID + 1;
 };
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Running on PORT ${PORT}`);

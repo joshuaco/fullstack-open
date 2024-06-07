@@ -60,10 +60,15 @@ function App() {
   const removeNote = async (id) => {
     const response = await deleteNote(id);
 
-    if (response.status === 200) {
+    if (response.status === 204) {
       setNotes(notes.filter((note) => note.id !== id));
       SetMessage('Note removed');
+      clearMessage();
     }
+  };
+
+  const clearMessage = () => {
+    setTimeout(() => SetMessage(null), 3000);
   };
 
   return (
