@@ -1,7 +1,4 @@
 const mongoose = require('mongoose');
-const connectToDB = require('../database/mongo');
-
-connectToDB();
 
 const noteSchema = new mongoose.Schema({
   content: {

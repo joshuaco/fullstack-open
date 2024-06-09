@@ -4,13 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node --watch index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development node --watch index.js",
+    "test": "NODE_ENV=test node --test",
     "build:ui": "rm -rf dist && cd ../../part-02/00-notes-frontend && pnpm run build && mv dist/ ../../part-03/00-notes-backend"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Joshua",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
