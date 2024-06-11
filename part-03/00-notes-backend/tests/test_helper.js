@@ -1,5 +1,6 @@
 const notes = require('../mocks/notes');
 const Note = require('../models/Note');
+const User = require('../models/User');
 
 const initialNotes = notes;
 
@@ -16,4 +17,9 @@ const notesInDB = async () => {
   return notes.map((note) => note.toJSON());
 };
 
-module.exports = { initialNotes, nonExistingID, notesInDB };
+const usersInDB = async () => {
+  const users = await User.find({});
+  return users.map((user) => user.toJSON());
+};
+
+module.exports = { initialNotes, nonExistingID, notesInDB, usersInDB };
