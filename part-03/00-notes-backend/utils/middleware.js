@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const logger = require('./logger');
 
 const requestLogger = (request, response, next) => {
@@ -5,6 +6,33 @@ const requestLogger = (request, response, next) => {
   logger.info('Path:  ', request.path);
   logger.info('Body:  ', request.body);
   logger.info('---');
+  next();
+};
+
+const getTokenFrom = (request) => {
+  const authorization = request.get('authorization');
+
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7);
+  }
+
+  return null;
+};
+
+const userExtractor = (request, response, next) => {
+  const decodedToken = jwt.verify(
+    getTokenFrom(request),
+    process.env.JWT_SECRET
+  );
+
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'invalid token' });
+  }
+
+  const { username, id } = decodedToken;
+  const decodedUser = { username, id };
+
+  request.user = decodedUser;
   next();
 };
 
@@ -31,7 +59,20 @@ const errorHandler = (error, request, response, next) => {
       .status(400)
       .json({ error: 'expected `username` to be unique' });
   }
+
+  if (error.name === 'JsonWebTokenError') {
+    return response.status(401).json({ error: 'missing or invalid token' });
+  }
+
+  if (error.name === 'TokenExpiredError') {
+    return response.status(401).json({ error: 'token expired' });
+  }
   next(error);
 };
 
-module.exports = { requestLogger, unknownEndpoint, errorHandler };
+module.exports = {
+  requestLogger,
+  userExtractor,
+  unknownEndpoint,
+  errorHandler
+};

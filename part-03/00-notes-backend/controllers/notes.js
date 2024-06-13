@@ -1,4 +1,5 @@
 const notesRouter = require('express').Router();
+const { userExtractor } = require('../utils/middleware');
 const Note = require('../models/Note');
 const User = require('../models/User');
 
@@ -18,10 +19,10 @@ notesRouter.get('/:id', async (request, response) => {
   }
 });
 
-notesRouter.post('/', async (request, response) => {
+notesRouter.post('/', userExtractor, async (request, response) => {
   const body = request.body;
 
-  const user = await User.findById(body.userID);
+  const user = await User.findById(request.user.id);
 
   const note = new Note({
     content: body.content,
@@ -36,7 +37,7 @@ notesRouter.post('/', async (request, response) => {
   response.status(201).json(savedNote);
 });
 
-notesRouter.put('/:id', async (request, response) => {
+notesRouter.put('/:id', userExtractor, async (request, response) => {
   const body = request.body;
 
   const note = {
@@ -53,7 +54,7 @@ notesRouter.put('/:id', async (request, response) => {
   response.json(updatedNote);
 });
 
-notesRouter.delete('/:id', async (request, response) => {
+notesRouter.delete('/:id', userExtractor, async (request, response) => {
   await Note.findByIdAndDelete(request.params.id);
   response.status(204).end();
 });
