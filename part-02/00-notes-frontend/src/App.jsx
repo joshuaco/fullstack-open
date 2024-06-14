@@ -3,13 +3,16 @@ import { updateNote, getNotes, createNote, deleteNote } from './services/notes';
 import Note from './components/Note';
 import Notification from './components/Notification';
 import Footer from './components/Footer';
+import Login from './components/Login';
+import NoteForm from './components/NoteForm';
 import './App.css';
 
 function App() {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
-  const [message, SetMessage] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +27,6 @@ function App() {
     return null;
   }
 
-  console.log('render', notes.length, 'notes');
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
 
   const toggleImportanceOf = async (id) => {
@@ -39,7 +41,9 @@ function App() {
       const response = await updateNote(changedNote.id, changedNote);
       setNotes(notes.map((note) => (note.id !== id ? note : response)));
     } catch (e) {
-      alert(`The note '${note.content}' was already deleted from server`);
+      console.log(e);
+      setMessage(e.response.statusText);
+      clearMessage();
       setNotes(notes.filter((note) => note.id !== id));
     }
   };
@@ -67,13 +71,13 @@ function App() {
 
     if (response.status === 204) {
       setNotes(notes.filter((note) => note.id !== id));
-      SetMessage('Note removed');
+      setMessage('Note removed');
       clearMessage();
     }
   };
 
   const clearMessage = () => {
-    setTimeout(() => SetMessage(null), 3000);
+    setTimeout(() => setMessage(null), 3000);
   };
 
   return (
@@ -83,27 +87,39 @@ function App() {
 
         {message && <Notification message={message} />}
 
-        <div>
-          <button onClick={() => setShowAll(!showAll)}>
-            show {showAll ? 'important' : 'all'}
-          </button>
-        </div>
+        {user === null ? (
+          <Login
+            setUser={setUser}
+            setMessage={setMessage}
+            clearMessage={clearMessage}
+          />
+        ) : (
+          <>
+            <p>{user.name} logged-in</p>
+            <div>
+              <button onClick={() => setShowAll(!showAll)}>
+                show {showAll ? 'important' : 'all'}
+              </button>
+            </div>
 
-        <ul>
-          {notesToShow.map((note) => (
-            <Note
-              key={note.id}
-              note={note}
-              toggleImportance={() => toggleImportanceOf(note.id)}
-              onDelete={() => removeNote(note.id)}
+            <ul>
+              {notesToShow.map((note) => (
+                <Note
+                  key={note.id}
+                  note={note}
+                  toggleImportance={() => toggleImportanceOf(note.id)}
+                  onDelete={() => removeNote(note.id)}
+                />
+              ))}
+            </ul>
+
+            <NoteForm
+              addNote={addNote}
+              newNote={newNote}
+              handleNoteChange={handleNoteChange}
             />
-          ))}
-        </ul>
-
-        <form onSubmit={addNote}>
-          <input type="text" value={newNote} onChange={handleNoteChange} />
-          <button type="submit">Add Note</button>
-        </form>
+          </>
+        )}
 
         <Footer />
       </div>
