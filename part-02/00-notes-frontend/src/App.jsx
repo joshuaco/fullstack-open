@@ -80,6 +80,11 @@ function App() {
     setTimeout(() => setMessage(null), 3000);
   };
 
+  const handleLogout = () => {
+    window.localStorage.clear();
+    setUser(null);
+  };
+
   return (
     <>
       <div>
@@ -95,7 +100,12 @@ function App() {
           />
         ) : (
           <>
-            <p>{user.name} logged-in</p>
+            <p>
+              {/* Todo: Fix this when came to react-bootstrap */}
+              {user.name} logged-in{' '}
+              <button onClick={handleLogout}>Logout</button>
+            </p>
+
             <div>
               <button onClick={() => setShowAll(!showAll)}>
                 show {showAll ? 'important' : 'all'}

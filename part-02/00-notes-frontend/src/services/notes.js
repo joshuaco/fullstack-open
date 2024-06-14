@@ -34,6 +34,10 @@ export async function updateNote(id, note) {
 }
 
 export async function deleteNote(id) {
-  const response = await axios.delete(`${URL}/${id}`);
+  const config = {
+    headers: { Authorization: token }
+  };
+
+  const response = await axios.delete(`${URL}/${id}`, config);
   return response;
 }

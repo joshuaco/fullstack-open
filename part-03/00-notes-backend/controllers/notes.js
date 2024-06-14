@@ -39,10 +39,12 @@ notesRouter.post('/', userExtractor, async (request, response) => {
 
 notesRouter.put('/:id', userExtractor, async (request, response) => {
   const body = request.body;
+  const user = request.user;
 
   const note = {
     ...body,
-    important: body.important
+    important: body.important,
+    user: user._id
   };
 
   const updatedNote = await Note.findByIdAndUpdate(request.params.id, note, {
