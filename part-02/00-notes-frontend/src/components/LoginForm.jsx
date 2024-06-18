@@ -5,7 +5,7 @@ import { login } from '../services/login';
 import { setToken } from '../services/notes';
 import { useEffect } from 'react';
 
-function Login({ setUser, setMessage, clearMessage }) {
+function LoginForm({ setUser, setMessage, clearMessage }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -22,6 +22,8 @@ function Login({ setUser, setMessage, clearMessage }) {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
+      if (username === '' || password === '') return;
+
       const user = await login({ username, password });
 
       window.localStorage.setItem('noteListUser', JSON.stringify(user));
@@ -62,4 +64,4 @@ function Login({ setUser, setMessage, clearMessage }) {
   );
 }
 
-export default Login;
+export default LoginForm;

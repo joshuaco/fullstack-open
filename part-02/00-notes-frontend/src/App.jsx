@@ -1,18 +1,20 @@
-import { useState, useEffect } from 'react';
-import { updateNote, getNotes, createNote, deleteNote } from './services/notes';
+import { useState, useEffect, useRef } from 'react';
+import { updateNote, getNotes, deleteNote, createNote } from './services/notes';
+import { setToken } from './services/notes';
 import Note from './components/Note';
 import Notification from './components/Notification';
 import Footer from './components/Footer';
-import Login from './components/Login';
+import LoginForm from './components/LoginForm';
 import NoteForm from './components/NoteForm';
+import Togglable from './components/Togglable';
 import './App.css';
 
 function App() {
   const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
   const [message, setMessage] = useState(null);
   const [user, setUser] = useState(null);
+  const noteFormRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +31,13 @@ function App() {
 
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
 
+  const addNote = async (noteObject) => {
+    noteFormRef.current.toggleVisibility();
+    const newNote = await createNote(noteObject);
+
+    setNotes(notes.concat(newNote));
+  };
+
   const toggleImportanceOf = async (id) => {
     const note = notes.find((note) => note.id === id);
 
@@ -44,36 +53,19 @@ function App() {
       console.log(e);
       setMessage(e.response.statusText);
       clearMessage();
-      setNotes(notes.filter((note) => note.id !== id));
     }
-  };
-
-  const addNote = async (event) => {
-    event.preventDefault();
-
-    const noteObject = {
-      content: newNote,
-      important: Math.random() < 0.5
-    };
-
-    const noteWithID = await createNote(noteObject);
-
-    setNotes(notes.concat(noteWithID));
-    setNewNote('');
-  };
-
-  const handleNoteChange = (event) => {
-    setNewNote(event.target.value);
   };
 
   const removeNote = async (id) => {
-    const response = await deleteNote(id);
+    try {
+      await deleteNote(id);
 
-    if (response.status === 204) {
       setNotes(notes.filter((note) => note.id !== id));
       setMessage('Note removed');
-      clearMessage();
+    } catch (e) {
+      setMessage('Error removing note');
     }
+    clearMessage();
   };
 
   const clearMessage = () => {
@@ -83,6 +75,7 @@ function App() {
   const handleLogout = () => {
     window.localStorage.clear();
     setUser(null);
+    setToken(null);
   };
 
   return (
@@ -93,11 +86,13 @@ function App() {
         {message && <Notification message={message} />}
 
         {user === null ? (
-          <Login
-            setUser={setUser}
-            setMessage={setMessage}
-            clearMessage={clearMessage}
-          />
+          <Togglable buttonLabel="login">
+            <LoginForm
+              setUser={setUser}
+              setMessage={setMessage}
+              clearMessage={clearMessage}
+            />
+          </Togglable>
         ) : (
           <>
             <p>
@@ -105,31 +100,28 @@ function App() {
               {user.name} logged-in{' '}
               <button onClick={handleLogout}>Logout</button>
             </p>
-
-            <div>
-              <button onClick={() => setShowAll(!showAll)}>
-                show {showAll ? 'important' : 'all'}
-              </button>
-            </div>
-
-            <ul>
-              {notesToShow.map((note) => (
-                <Note
-                  key={note.id}
-                  note={note}
-                  toggleImportance={() => toggleImportanceOf(note.id)}
-                  onDelete={() => removeNote(note.id)}
-                />
-              ))}
-            </ul>
-
-            <NoteForm
-              addNote={addNote}
-              newNote={newNote}
-              handleNoteChange={handleNoteChange}
-            />
+            <Togglable buttonLabel="new note" ref={noteFormRef}>
+              <NoteForm createNote={addNote} />
+            </Togglable>
           </>
         )}
+
+        <div>
+          <button onClick={() => setShowAll(!showAll)}>
+            show {showAll ? 'important' : 'all'}
+          </button>
+        </div>
+
+        <ul>
+          {notesToShow.map((note) => (
+            <Note
+              key={note.id}
+              note={note}
+              toggleImportance={() => toggleImportanceOf(note.id)}
+              onDelete={() => removeNote(note.id)}
+            />
+          ))}
+        </ul>
 
         <Footer />
       </div>
