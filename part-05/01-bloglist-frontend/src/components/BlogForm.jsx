@@ -12,6 +12,7 @@ function BlogForm({ setBlogs, setMessage, toggleRef }) {
 
     if (title === '' || author === '' || url === '') {
       setMessage('Error: All fields are required');
+      setTimeout(() => setMessage(null), 3000);
       return;
     }
 
