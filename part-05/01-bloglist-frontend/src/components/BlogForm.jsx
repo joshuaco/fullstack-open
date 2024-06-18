@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { create } from '../services/blogs';
 
-function BlogForm({ setBlogs, setMessage }) {
+function BlogForm({ setBlogs, setMessage, toggleRef }) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -11,10 +11,12 @@ function BlogForm({ setBlogs, setMessage }) {
     e.preventDefault();
 
     if (title === '' || author === '' || url === '') {
+      setMessage('Error: All fields are required');
       return;
     }
 
     try {
+      toggleRef.current.toggleVisibility();
       const newBlog = await create({ title, author, url });
 
       setMessage(`Blog '${newBlog.title}' has been added successfully!`);
@@ -35,28 +37,28 @@ function BlogForm({ setBlogs, setMessage }) {
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="title">Title</label>
           <input
             type="text"
             id="title"
+            placeholder="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div>
-          <label htmlFor="author">Author</label>
           <input
             type="text"
             id="author"
+            placeholder="Author"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
           />
         </div>
         <div>
-          <label htmlFor="url">URL</label>
           <input
             type="url"
             id="url"
+            placeholder="https://yourblog.com"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
           />

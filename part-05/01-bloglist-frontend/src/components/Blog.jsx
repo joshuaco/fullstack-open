@@ -2,8 +2,11 @@
 function Blog({ blog }) {
   return (
     <div>
-      <p>
-        {blog.title} <span>{blog.author}</span>
+      <p style={{ fontWeight: 'bold' }}>
+        {blog.title} -{' '}
+        <span style={{ fontStyle: 'italic', fontWeight: 'normal' }}>
+          {blog.author}
+        </span>
       </p>
     </div>
   );
