@@ -34,3 +34,11 @@ export const update = async (blog) => {
   const response = await axios.put(`${URL}/${blog.id}`, blog, config);
   return response.data;
 };
+
+export const remove = async (id) => {
+  const config = {
+    headers: { Authorization: token }
+  };
+
+  await axios.delete(`${URL}/${id}`, config);
+};

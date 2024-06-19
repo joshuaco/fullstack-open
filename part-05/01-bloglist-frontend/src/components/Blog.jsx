@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { update } from '../services/blogs';
+import { remove, update } from '../services/blogs';
 
 /* eslint-disable react/prop-types */
-function Blog({ blog, setBlogs }) {
+function Blog({ blog, setBlogs, userID, setMessage }) {
   const [visible, setVisible] = useState(false);
 
   const blogStyle = {
@@ -27,6 +27,23 @@ function Blog({ blog, setBlogs }) {
     setBlogs((prevBlogs) =>
       prevBlogs.map((b) => (b.id === blog.id ? { ...b, likes } : b))
     );
+  };
+
+  const handleRemove = async () => {
+    if (userID === blog.user.id) {
+      const isConfirmed = window.confirm(
+        `Remove blog ${blog.title} by ${blog.author}?`
+      );
+
+      if (isConfirmed) {
+        setBlogs((prevBlogs) => prevBlogs.filter((b) => b.id !== blog.id));
+
+        await remove(blog.id);
+      }
+    } else {
+      setMessage('Error: You are not allowed to remove this blog');
+      setTimeout(() => setMessage(null), 3000);
+    }
   };
 
   return (
@@ -57,6 +74,10 @@ function Blog({ blog, setBlogs }) {
             <button onClick={handleIncreaseLikes}>like</button>
           </p>
           <p>{blog.user.name}</p>
+
+          <button style={{ width: '15%' }} onClick={handleRemove}>
+            remove
+          </button>
         </div>
       )}
     </div>

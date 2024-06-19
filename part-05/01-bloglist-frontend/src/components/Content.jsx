@@ -24,7 +24,13 @@ function Content({ blogs, setBlogs, user, onLogout, setMessage }) {
       </Togglable>
 
       {orderedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          setBlogs={setBlogs}
+          userID={user.id}
+          setMessage={setMessage}
+        />
       ))}
     </div>
   );
