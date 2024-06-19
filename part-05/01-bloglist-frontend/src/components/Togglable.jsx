@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState, forwardRef, useImperativeHandle } from 'react';
 
-const Togglable = forwardRef(function Togglable(props, refs) {
+const Togglable = forwardRef(function TogglableComponent(props, refs) {
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? 'none' : '' };
