@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { update } from '../services/blogs';
 
 /* eslint-disable react/prop-types */
-function Blog({ blog }) {
+function Blog({ blog, setBlogs }) {
   const [visible, setVisible] = useState(false);
 
   const blogStyle = {
@@ -12,6 +13,20 @@ function Blog({ blog }) {
 
   const toggleVisibility = () => {
     setVisible(!visible);
+  };
+
+  const handleIncreaseLikes = async () => {
+    const updatedBlog = {
+      ...blog,
+      user: blog.user.id,
+      likes: blog.likes + 1
+    };
+
+    const { likes } = await update(updatedBlog);
+
+    setBlogs((prevBlogs) =>
+      prevBlogs.map((b) => (b.id === blog.id ? { ...b, likes } : b))
+    );
   };
 
   return (
@@ -38,7 +53,8 @@ function Blog({ blog }) {
         >
           <p>{blog.url}</p>
           <p>
-            likes {blog.likes} <button>like</button>
+            likes {blog.likes}{' '}
+            <button onClick={handleIncreaseLikes}>like</button>
           </p>
           <p>{blog.user.name}</p>
         </div>

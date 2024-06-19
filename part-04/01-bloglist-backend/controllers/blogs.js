@@ -40,6 +40,8 @@ blogRouter.put('/:id', userExtractor, async (request, response, next) => {
     likes: body.likes
   };
 
+  console.log('Here...');
+
   await Blog.findByIdAndUpdate(request.params.id, updatedBlog, { new: true });
   response.status(200).json(updatedBlog);
 });

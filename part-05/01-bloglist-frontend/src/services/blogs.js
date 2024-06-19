@@ -25,3 +25,12 @@ export const create = async (newBlog) => {
   const response = await axios.post(URL, newBlog, config);
   return response.data;
 };
+
+export const update = async (blog) => {
+  const config = {
+    headers: { Authorization: token }
+  };
+
+  const response = await axios.put(`${URL}/${blog.id}`, blog, config);
+  return response.data;
+};

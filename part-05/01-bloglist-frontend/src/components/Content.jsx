@@ -7,6 +7,8 @@ import Togglable from './Togglable';
 function Content({ blogs, setBlogs, user, onLogout, setMessage }) {
   const blogFormRef = useRef();
 
+  const orderedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
+
   return (
     <div>
       <p>
@@ -21,8 +23,8 @@ function Content({ blogs, setBlogs, user, onLogout, setMessage }) {
         />
       </Togglable>
 
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+      {orderedBlogs.map((blog) => (
+        <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />
       ))}
     </div>
   );
