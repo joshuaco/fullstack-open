@@ -47,7 +47,7 @@ function Blog({ blog, setBlogs, userID, setMessage }) {
   };
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog-container">
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <p style={{ fontWeight: 'bold' }}>
           {blog.title} -{' '}
@@ -67,6 +67,7 @@ function Blog({ blog, setBlogs, userID, setMessage }) {
             flexDirection: 'column',
             textAlign: 'left'
           }}
+          className="togglable-content"
         >
           <p>{blog.url}</p>
           <p>
