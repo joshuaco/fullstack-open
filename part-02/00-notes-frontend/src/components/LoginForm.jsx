@@ -44,6 +44,7 @@ function LoginForm({ setUser, setMessage, clearMessage }) {
           <label htmlFor="username">username</label>
           <input
             type="text"
+            data-testid="username"
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -53,6 +54,7 @@ function LoginForm({ setUser, setMessage, clearMessage }) {
           <label htmlFor="password">password</label>
           <input
             type="password"
+            data-testid="password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
