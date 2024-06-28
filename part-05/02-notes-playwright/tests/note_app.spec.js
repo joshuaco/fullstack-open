@@ -62,13 +62,17 @@ describe('Note app', () => {
       beforeEach(async ({ page }) => {
         await createNote(page, 'a new note by playwright');
         await createNote(page, 'another note by playwright');
+        await createNote(page, 'a third note created by playwright');
       });
 
       test.only('importance can be changed', async ({ page }) => {
-        const noteElement = await page.getByText('a new note by playwright');
+        await page.pause();
+
+        const noteText = await page.getByText('another note by playwright');
+        const noteElement = await noteText.locator('..');
 
         await noteElement
-          .getByRole('button', { name: 'make important' })
+          .getByRole('button', { name: 'Make important' })
           .click();
         await expect(noteElement.getByText('make not important')).toBeVisible();
       });
