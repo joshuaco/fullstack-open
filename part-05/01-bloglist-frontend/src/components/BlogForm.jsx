@@ -41,6 +41,7 @@ function BlogForm({ setBlogs, setMessage, toggleRef }) {
           <input
             type="text"
             id="title"
+            data-testid="title"
             placeholder="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -50,6 +51,7 @@ function BlogForm({ setBlogs, setMessage, toggleRef }) {
           <input
             type="text"
             id="author"
+            data-testid="author"
             placeholder="Author"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
@@ -59,6 +61,7 @@ function BlogForm({ setBlogs, setMessage, toggleRef }) {
           <input
             type="url"
             id="url"
+            data-testid="url"
             placeholder="https://yourblog.com"
             value={url}
             onChange={(e) => setUrl(e.target.value)}

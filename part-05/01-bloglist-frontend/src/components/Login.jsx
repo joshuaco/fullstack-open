@@ -47,6 +47,7 @@ function Login({ setUser, setMessage }) {
           <label htmlFor="username">username</label>
           <input
             type="text"
+            data-testid="username"
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -56,6 +57,7 @@ function Login({ setUser, setMessage }) {
           <label htmlFor="password">password</label>
           <input
             type="password"
+            data-testid="password"
             name="password"
             id="password"
             value={password}

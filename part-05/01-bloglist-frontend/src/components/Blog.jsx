@@ -47,7 +47,7 @@ function Blog({ blog, setBlogs, userID, setMessage }) {
   };
 
   return (
-    <div style={blogStyle} className="blog-container">
+    <div style={blogStyle} className="blog">
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <p style={{ fontWeight: 'bold' }}>
           {blog.title} -{' '}
