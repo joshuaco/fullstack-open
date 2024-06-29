@@ -20,6 +20,7 @@ function Content({ blogs, setBlogs, user, onLogout, setMessage }) {
           setBlogs={setBlogs}
           setMessage={setMessage}
           toggleRef={blogFormRef}
+          user={user}
         />
       </Togglable>
 

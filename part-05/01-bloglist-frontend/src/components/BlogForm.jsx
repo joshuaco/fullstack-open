@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { create } from '../services/blogs';
 
-function BlogForm({ setBlogs, setMessage, toggleRef }) {
+function BlogForm({ setBlogs, setMessage, toggleRef, user }) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -19,6 +19,12 @@ function BlogForm({ setBlogs, setMessage, toggleRef }) {
     try {
       toggleRef.current.toggleVisibility();
       const newBlog = await create({ title, author, url });
+
+      newBlog.user = {
+        id: user.id,
+        name: user.name,
+        username: user.username
+      };
 
       setMessage(`Blog '${newBlog.title}' has been added successfully!`);
       setBlogs((prevBlogs) => prevBlogs.concat(newBlog));
