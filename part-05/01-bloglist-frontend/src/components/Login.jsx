@@ -44,17 +44,16 @@ function Login({ setUser, setMessage }) {
 
       <form onSubmit={handleLogin}>
         <div className="field">
-          <label htmlFor="username">username</label>
           <input
             type="text"
             data-testid="username"
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            placeholder="username"
           />
         </div>
         <div className="field">
-          <label htmlFor="password">password</label>
           <input
             type="password"
             data-testid="password"
@@ -62,6 +61,7 @@ function Login({ setUser, setMessage }) {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="password"
           />
         </div>
         <button type="submit">Login</button>

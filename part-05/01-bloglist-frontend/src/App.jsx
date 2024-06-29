@@ -4,6 +4,7 @@ import { getAll } from './services/blogs';
 import Content from './components/Content';
 import Login from './components/Login';
 import Notification from './components/Notification';
+import Togglable from './components/Togglable';
 import './App.css';
 
 function App() {
@@ -33,7 +34,9 @@ function App() {
       <Notification message={message} />
 
       {user === null ? (
-        <Login setUser={setUser} setMessage={setMessage} />
+        <Togglable buttonLabel="login">
+          <Login setUser={setUser} setMessage={setMessage} />
+        </Togglable>
       ) : (
         <Content
           blogs={blogs}

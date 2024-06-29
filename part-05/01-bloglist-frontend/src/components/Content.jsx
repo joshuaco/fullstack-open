@@ -11,9 +11,11 @@ function Content({ blogs, setBlogs, user, onLogout, setMessage }) {
 
   return (
     <div>
-      <p>
-        Welcome {user.name} <button onClick={onLogout}>logout</button>
-      </p>
+      {user && (
+        <p>
+          Welcome {user.name} <button onClick={onLogout}>logout</button>
+        </p>
+      )}
 
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <BlogForm
