@@ -7,7 +7,8 @@
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development node --watch index.js",
     "test": "NODE_ENV=test node --test",
-    "start:test": "NODE_ENV=test node index.js"
+    "start:test": "NODE_ENV=test node index.js",
+    "build:ui": "rm -rf dist && cd ../../part-05/01-bloglist-frontend && pnpm run build && mv dist/ ../../part-04/01-bloglist-backend"
   },
   "keywords": [],
   "author": "",
