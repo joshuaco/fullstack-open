@@ -76,7 +76,12 @@ function Blog({ blog, setBlogs, userID, setMessage }) {
           </p>
           <p>{blog.user.name}</p>
 
-          <button style={{ width: '15%' }} onClick={handleRemove}>
+          <button
+            style={
+              userID !== blog.user.id ? { display: 'none' } : { width: '20%' }
+            }
+            onClick={handleRemove}
+          >
             remove
           </button>
         </div>
