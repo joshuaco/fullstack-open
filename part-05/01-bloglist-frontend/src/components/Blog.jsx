@@ -70,7 +70,7 @@ function Blog({ blog, setBlogs, userID, setMessage }) {
           className="togglable-content"
         >
           <p>{blog.url}</p>
-          <p>
+          <p className="likes">
             likes {blog.likes}{' '}
             <button onClick={handleIncreaseLikes}>like</button>
           </p>

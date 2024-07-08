@@ -79,7 +79,7 @@ describe('Blog app', () => {
       await expect(page.getByText('likes 1')).toBeVisible();
     });
 
-    test.only('blog can be deleted', async ({ page }) => {
+    test('blog can be deleted', async ({ page }) => {
       // Enable dialog handler
       page.on('dialog', async (dialog) => await dialog.accept());
 
@@ -89,6 +89,70 @@ describe('Blog app', () => {
       expect(
         page.getByText('another blog from playwright - playwright')
       ).not.toBeVisible();
+    });
+  });
+
+  describe('when are more users registered', () => {
+    beforeEach(async ({ page }) => {
+      await request.post('/api/users', {
+        data: {
+          name: 'admin',
+          username: 'admin',
+          password: 'administrator'
+        }
+      });
+      await page.getByRole('button', { name: 'logout' }).click();
+      await loginWith(page, 'admin', 'administrator');
+    });
+
+    test('only the blog creator can delete the blog', async ({ page }) => {
+      await page.getByRole('button', { name: 'view' });
+    });
+  });
+
+  describe('when several blogs are created', () => {
+    beforeEach(async ({ page }) => {
+      await loginWith(page, 'test', 'testerization');
+      await createBlog(
+        page,
+        'first blog',
+        'playwright',
+        'https://www.playwright.dev'
+      );
+      await createBlog(
+        page,
+        'second blog',
+        'playwright',
+        'https://www.playwright.dev'
+      );
+      await createBlog(
+        page,
+        'third blog',
+        'playwright',
+        'https://www.playwright.dev'
+      );
+    });
+
+    test.only('blogs are ordered according to likes', async ({ page }) => {
+      await page.getByRole('button', { name: 'view' }).last().click();
+      await page.getByRole('button', { name: 'like' }).click();
+      await page.getByRole('button', { name: 'like' }).click();
+
+      await page.getByRole('button', { name: 'view' }).nth(1).click();
+      await page.getByRole('button', { name: 'like' }).nth(1).click();
+
+      await page.getByRole('button', { name: 'view' }).click();
+
+      const blogs = await page.$$eval('.blog', (blogs) => {
+        return blogs.map((blog) => {
+          const likes = blog.querySelector('.likes').textContent;
+          return parseInt(likes.split(' ')[1]);
+        });
+      });
+
+      blogs.forEach((blog) => {
+        expect(blog).toBeLessThanOrEqual(blogs[0]);
+      });
     });
   });
 });
