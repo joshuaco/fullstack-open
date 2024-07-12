@@ -7,7 +7,10 @@ import { noteReducer } from './reducers/noteReducer.js';
 import App from './App.jsx';
 import './index.css';
 
-const store = createStore(noteReducer);
+const store = createStore(
+  noteReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
