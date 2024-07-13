@@ -1,4 +1,6 @@
-const noteReducer = (state = [], action) => {
+import { notes as initialNotes } from '../mock/notes';
+
+const noteReducer = (state = initialNotes, action) => {
   if (action.type === 'NEW_NOTE') {
     return [...state, action.payload];
   }
@@ -37,4 +39,4 @@ export const toggleImportanceOf = (id) => {
   };
 };
 
-export { noteReducer };
+export default noteReducer;
