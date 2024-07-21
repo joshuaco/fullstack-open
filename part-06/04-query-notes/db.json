@@ -1,0 +1,39 @@
+{
+  "notes": [
+    {
+      "content": "state of store can contain any data",
+      "important": false,
+      "id": "2"
+    },
+    {
+      "content": "reducer defines how redux store works",
+      "important": false,
+      "id": "3"
+    },
+    {
+      "id": "d272",
+      "content": "React (TanStack) Query uses mutation queries",
+      "important": true
+    },
+    {
+      "id": "d254",
+      "content": "it simplifies the communication with backend",
+      "important": false
+    },
+    {
+      "id": "c000",
+      "content": "Query refresh on every mutation",
+      "important": true
+    },
+    {
+      "id": "d70c",
+      "content": "React Query mantiene el estado del servidor",
+      "important": true
+    },
+    {
+      "id": "d5b7",
+      "content": "Redux mantains the client state",
+      "important": false
+    }
+  ]
+}
