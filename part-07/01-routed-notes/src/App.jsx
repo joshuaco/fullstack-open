@@ -1,5 +1,12 @@
+import { Routes, Route, Link, useMatch } from 'react-router-dom';
+import { notes as initialNotes } from './mocks/notes';
 import { useState } from 'react';
+import Note from './components/Note';
+import Notes from './components/Notes';
+import Users from './components/Users';
+import Login from './components/Login';
 import './App.css';
+import { Navigate } from 'react-router-dom';
 
 const Home = () => (
   <div>
@@ -7,52 +14,61 @@ const Home = () => (
   </div>
 );
 
-const Notes = () => (
-  <div>
-    <h2>Notes</h2>
-  </div>
-);
-
-const Users = () => (
-  <div>
-    <h2>Users</h2>
-  </div>
-);
-
 function App() {
-  const [page, setPage] = useState('home');
+  const [notes] = useState(initialNotes);
+  const [user, setUser] = useState(null);
 
-  // Function that returns another function.
-  const toPage = (page) => (event) => {
-    event.preventDefault();
-    setPage(page);
+  const match = useMatch('/notes/:id');
+  const note = match
+    ? notes.find((note) => note.id === +match.params.id)
+    : null;
+
+  const padding = {
+    padding: 5
   };
 
-  const content = () => {
-    if (page === 'notes') {
-      return <Notes />;
-    } else if (page === 'users') {
-      return <Users />;
-    } else {
-      return <Home />;
-    }
+  const login = (user) => {
+    setUser(user);
   };
 
   return (
     <div>
       <header>
-        <a href="/" onClick={toPage('home')} style={{ padding: 5 }}>
+        <Link style={padding} to="/">
           home
-        </a>
-        <a href="/notes" onClick={toPage('notes')} style={{ padding: 5 }}>
+        </Link>
+        <Link style={padding} to="/notes">
           notes
-        </a>
-        <a href="/users" onClick={toPage('users')} style={{ padding: 5 }}>
+        </Link>
+        <Link style={padding} to="/users">
           users
-        </a>
+        </Link>
+        {user ? (
+          <em style={padding}>{user} logged in</em>
+        ) : (
+          <Link style={padding} to="/login">
+            login
+          </Link>
+        )}
       </header>
 
-      <main>{content()}</main>
+      <Routes>
+        <Route path="/notes/:id" element={<Note note={note} />} />
+        <Route path="/notes" element={<Notes notes={notes} />} />
+        <Route path="/login" element={<Login onLogin={login} />} />
+        <Route
+          path="/users"
+          element={
+            user ? <Users notes={notes} /> : <Navigate replace to="/login" />
+          }
+        />
+        <Route path="/" element={<Home />} />
+      </Routes>
+
+      <footer>
+        <br />
+        <em>Note app, Department of Computer Science 2024</em>
+      </footer>
     </div>
   );
 }
