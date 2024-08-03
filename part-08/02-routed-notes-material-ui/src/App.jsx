@@ -1,12 +1,12 @@
-import { Routes, Route, Link, useMatch } from 'react-router-dom';
+import { Routes, Route, useMatch, Navigate } from 'react-router-dom';
 import { notes as initialNotes } from './mocks/notes';
+import { Alert, Container } from '@mui/material';
 import { useState } from 'react';
 import Note from './components/Note';
 import Notes from './components/Notes';
 import Users from './components/Users';
 import Login from './components/Login';
-import './App.css';
-import { Navigate } from 'react-router-dom';
+import NavBar from './components/NavBar';
 
 const Home = () => (
   <div>
@@ -17,40 +17,24 @@ const Home = () => (
 function App() {
   const [notes] = useState(initialNotes);
   const [user, setUser] = useState(null);
+  const [message, setMessage] = useState('');
 
   const match = useMatch('/notes/:id');
   const note = match
     ? notes.find((note) => note.id === +match.params.id)
     : null;
 
-  const padding = {
-    padding: 5
-  };
-
   const login = (user) => {
     setUser(user);
+    setMessage(`welcome ${user}`);
+    setTimeout(() => setMessage(''), 3000);
   };
 
   return (
-    <div>
-      <header>
-        <Link style={padding} to="/">
-          home
-        </Link>
-        <Link style={padding} to="/notes">
-          notes
-        </Link>
-        <Link style={padding} to="/users">
-          users
-        </Link>
-        {user ? (
-          <em style={padding}>{user} logged in</em>
-        ) : (
-          <Link style={padding} to="/login">
-            login
-          </Link>
-        )}
-      </header>
+    <Container>
+      <NavBar user={user} />
+
+      {message && <Alert severity="success">{message}</Alert>}
 
       <Routes>
         <Route path="/notes/:id" element={<Note note={note} />} />
@@ -69,7 +53,7 @@ function App() {
         <br />
         <em>Note app, Department of Computer Science 2024</em>
       </footer>
-    </div>
+    </Container>
   );
 }
 

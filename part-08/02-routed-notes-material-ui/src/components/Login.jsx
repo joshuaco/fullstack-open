@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +9,6 @@ function Login({ onLogin }) {
 
   const onSubmit = (event) => {
     event.preventDefault();
-
     onLogin(username);
     navigate('/');
   };
@@ -18,18 +18,21 @@ function Login({ onLogin }) {
       <h2>Login</h2>
       <form onSubmit={onSubmit}>
         <div>
-          <input
-            type="text"
-            id="username"
-            name="username"
+          <TextField
+            label="username"
+            value={username}
+            variant="standard"
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="username"
           />
         </div>
         <div>
-          <input type="password" id="password" placeholder="password" />
+          <TextField label="password" type="password" variant="standard" />
         </div>
-        <button type="submit">login</button>
+        <div>
+          <Button variant="contained" type="submit" color="primary">
+            login
+          </Button>
+        </div>
       </form>
     </div>
   );
