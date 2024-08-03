@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { anecdotes as initialState } from './mocks/anecdotes';
 import About from './components/About';
@@ -7,7 +7,6 @@ import CreateNew from './components/CreateNew';
 import Footer from './components/Footer';
 import Menu from './components/Menu';
 import Anecdote from './components/Anecdote';
-import { useEffect } from 'react';
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState(initialState);
