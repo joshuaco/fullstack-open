@@ -26,16 +26,14 @@ const useResource = (baseUrl) => {
   const getAll = async () => {
     const response = await axios(baseUrl);
     setResources(response.data);
-    console.log('loading data...');
   };
 
   const create = async (resource) => {
     const response = await axios.post(baseUrl, resource);
-    return response.data;
+    setResources(resources.concat(response.data));
   };
 
   const service = {
-    getAll,
     create
   };
 
@@ -53,13 +51,11 @@ const App = () => {
   const handleNoteSubmit = (event) => {
     event.preventDefault();
     noteService.create({ content: content.value });
-    noteService.getAll();
   };
 
   const handlePersonSubmit = (event) => {
     event.preventDefault();
     personService.create({ name: name.value, number: number.value });
-    personService.getAll();
   };
 
   return (
