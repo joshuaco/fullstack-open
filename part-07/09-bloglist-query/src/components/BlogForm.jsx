@@ -1,18 +1,19 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { create } from '../services/blogs';
+import NotificationContext from '../contexts/NotificationContext';
 
-function BlogForm({ setBlogs, setMessage, toggleRef, user }) {
+function BlogForm({ setBlogs, toggleRef, user }) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
+  const setNotification = useContext(NotificationContext)[1];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (title === '' || author === '' || url === '') {
-      setMessage('Error: All fields are required');
-      setTimeout(() => setMessage(null), 3000);
+      setNotification('Error: All fields are required', 3);
       return;
     }
 
@@ -26,16 +27,18 @@ function BlogForm({ setBlogs, setMessage, toggleRef, user }) {
         username: user.username
       };
 
-      setMessage(`Blog '${newBlog.title}' has been added successfully!`);
+      setNotification(
+        `Blog '${newBlog.title}' has been added successfully!`,
+        3
+      );
       setBlogs((prevBlogs) => prevBlogs.concat(newBlog));
 
       setTitle('');
       setAuthor('');
       setUrl('');
     } catch (e) {
-      setMessage('Error creating blog');
+      setNotification('Error creating blog', 3);
     }
-    setTimeout(() => setMessage(null), 3000);
   };
 
   return (

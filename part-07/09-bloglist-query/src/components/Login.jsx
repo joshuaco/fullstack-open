@@ -5,10 +5,10 @@ import { login } from '../services/login';
 import { setToken } from '../services/blogs';
 import NotificationContext from '../contexts/NotificationContext';
 
-function Login({ setUser, setMessage }) {
-  const [, setNotification] = useContext(NotificationContext);
+function Login({ setUser }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const setNotification = useContext(NotificationContext)[1];
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('blogUser');
@@ -32,7 +32,6 @@ function Login({ setUser, setMessage }) {
       window.localStorage.setItem('blogUser', JSON.stringify(user));
       setUser(user);
       setToken(user.token);
-      setMessage(null);
     } catch (e) {
       setNotification('Error: username or password incorrect', 3);
     }

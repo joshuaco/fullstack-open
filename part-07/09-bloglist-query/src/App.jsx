@@ -10,7 +10,6 @@ import './App.css';
 function App() {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     const getBlogs = async () => {
@@ -31,11 +30,11 @@ function App() {
     <div>
       <h1>Blogs</h1>
 
-      <Notification message={message} />
+      <Notification />
 
       {user === null ? (
         <Togglable buttonLabel="login">
-          <Login setUser={setUser} setMessage={setMessage} />
+          <Login setUser={setUser} />
         </Togglable>
       ) : (
         <Content
@@ -43,7 +42,6 @@ function App() {
           setBlogs={setBlogs}
           user={user}
           onLogout={logout}
-          setMessage={setMessage}
         />
       )}
     </div>

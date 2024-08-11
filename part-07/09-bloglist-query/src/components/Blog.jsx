@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { remove, update } from '../services/blogs';
+import NotificationContext from '../contexts/NotificationContext';
 
 /* eslint-disable react/prop-types */
-function Blog({ blog, setBlogs, userID, setMessage }) {
+function Blog({ blog, setBlogs, userID }) {
   const [visible, setVisible] = useState(false);
+  const setNotification = useContext(NotificationContext)[1];
 
   const blogStyle = {
     paddingTop: 10,
@@ -41,8 +43,7 @@ function Blog({ blog, setBlogs, userID, setMessage }) {
         await remove(blog.id);
       }
     } else {
-      setMessage('Error: You are not allowed to remove this blog');
-      setTimeout(() => setMessage(null), 3000);
+      setNotification('Error: You are not allowed to remove this blog', 3);
     }
   };
 

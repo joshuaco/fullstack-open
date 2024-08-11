@@ -4,7 +4,7 @@ import Blog from './Blog';
 import BlogForm from './BlogForm';
 import Togglable from './Togglable';
 
-function Content({ blogs, setBlogs, user, onLogout, setMessage }) {
+function Content({ blogs, setBlogs, user, onLogout }) {
   const blogFormRef = useRef();
 
   const orderedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
@@ -18,22 +18,11 @@ function Content({ blogs, setBlogs, user, onLogout, setMessage }) {
       )}
       <hr />
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm
-          setBlogs={setBlogs}
-          setMessage={setMessage}
-          toggleRef={blogFormRef}
-          user={user}
-        />
+        <BlogForm setBlogs={setBlogs} toggleRef={blogFormRef} user={user} />
       </Togglable>
 
       {orderedBlogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          setBlogs={setBlogs}
-          userID={user.id}
-          setMessage={setMessage}
-        />
+        <Blog key={blog.id} blog={blog} setBlogs={setBlogs} userID={user.id} />
       ))}
     </div>
   );
