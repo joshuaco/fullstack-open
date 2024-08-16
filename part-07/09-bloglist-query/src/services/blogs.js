@@ -17,13 +17,21 @@ export const getAll = async () => {
   }
 };
 
-export const create = async (newBlog) => {
+export const create = async (newBlog, user) => {
   const config = {
     headers: { Authorization: token }
   };
 
   const response = await axios.post(URL, newBlog, config);
-  return response.data;
+  const newBlogData = response.data;
+
+  newBlogData.user = {
+    id: user.id,
+    name: user.name,
+    username: user.username
+  };
+
+  return newBlogData;
 };
 
 export const update = async (blog) => {

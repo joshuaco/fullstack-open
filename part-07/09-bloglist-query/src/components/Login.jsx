@@ -1,22 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useContext } from 'react';
-import { login } from '../services/login';
-import { setToken } from '../services/blogs';
-import NotificationContext from '../contexts/NotificationContext';
+import { useState, useEffect } from 'react';
+import { useUser } from '../hooks/useUser';
 
-function Login({ setUser }) {
+function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const setNotification = useContext(NotificationContext)[1];
+  const { loginUser, loggedUSer } = useUser();
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('blogUser');
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      setToken(user.token);
-    }
+    loggedUSer();
   }, []);
 
   const handleLogin = async (e) => {
@@ -26,15 +19,7 @@ function Login({ setUser }) {
       return;
     }
 
-    try {
-      const user = await login({ username, password });
-
-      window.localStorage.setItem('blogUser', JSON.stringify(user));
-      setUser(user);
-      setToken(user.token);
-    } catch (e) {
-      setNotification('Error: username or password incorrect', 3);
-    }
+    loginUser(username, password);
   };
 
   return (

@@ -1,28 +1,34 @@
 /* eslint-disable react/prop-types */
 import { useRef } from 'react';
+import { useUser } from '../hooks/useUser';
+import { useBlogs } from '../hooks/useBlogs';
 import Blog from './Blog';
 import BlogForm from './BlogForm';
 import Togglable from './Togglable';
 
-function Content({ blogs, setBlogs, user, onLogout }) {
+function Content() {
+  const { logoutUser, user } = useUser();
+  const { blogs } = useBlogs();
   const blogFormRef = useRef();
 
-  const orderedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
+  if (blogs.isLoading) return <p>Loading...</p>;
+
+  const orderedBlogs = [...blogs.data].sort((a, b) => b.likes - a.likes);
 
   return (
     <div>
       {user && (
         <p>
-          Welcome {user.name} <button onClick={onLogout}>logout</button>
+          Welcome {user.name} <button onClick={logoutUser}>logout</button>
         </p>
       )}
       <hr />
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm setBlogs={setBlogs} toggleRef={blogFormRef} user={user} />
+        <BlogForm toggleRef={blogFormRef} />
       </Togglable>
 
       {orderedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} setBlogs={setBlogs} userID={user.id} />
+        <Blog key={blog.id} blog={blog} userID={user.id} />
       ))}
     </div>
   );

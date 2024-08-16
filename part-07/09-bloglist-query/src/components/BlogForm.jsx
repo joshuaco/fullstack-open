@@ -1,13 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from 'react';
-import { create } from '../services/blogs';
+import { useBlogs } from '../hooks/useBlogs';
+import { useUser } from '../hooks/useUser';
 import NotificationContext from '../contexts/NotificationContext';
 
-function BlogForm({ setBlogs, toggleRef, user }) {
+function BlogForm({ toggleRef }) {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
-  const setNotification = useContext(NotificationContext)[1];
+
+  const { setNotification } = useContext(NotificationContext);
+  const { newBlogMutation } = useBlogs();
+  const { user } = useUser();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,28 +21,13 @@ function BlogForm({ setBlogs, toggleRef, user }) {
       return;
     }
 
-    try {
-      toggleRef.current.toggleVisibility();
-      const newBlog = await create({ title, author, url });
+    toggleRef.current.toggleVisibility();
+    const blogData = { title, author, url };
+    newBlogMutation.mutate({ blogData, user });
 
-      newBlog.user = {
-        id: user.id,
-        name: user.name,
-        username: user.username
-      };
-
-      setNotification(
-        `Blog '${newBlog.title}' has been added successfully!`,
-        3
-      );
-      setBlogs((prevBlogs) => prevBlogs.concat(newBlog));
-
-      setTitle('');
-      setAuthor('');
-      setUrl('');
-    } catch (e) {
-      setNotification('Error creating blog', 3);
-    }
+    setTitle('');
+    setAuthor('');
+    setUrl('');
   };
 
   return (

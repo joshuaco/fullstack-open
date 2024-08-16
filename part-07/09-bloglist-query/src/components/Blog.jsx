@@ -1,11 +1,10 @@
-import { useContext, useState } from 'react';
-import { remove, update } from '../services/blogs';
-import NotificationContext from '../contexts/NotificationContext';
+import { useState } from 'react';
+import { useBlogs } from '../hooks/useBlogs';
 
 /* eslint-disable react/prop-types */
-function Blog({ blog, setBlogs, userID }) {
+function Blog({ blog, userID }) {
   const [visible, setVisible] = useState(false);
-  const setNotification = useContext(NotificationContext)[1];
+  const { likeBlogMutation, removeBlogMutation } = useBlogs();
 
   const blogStyle = {
     paddingTop: 10,
@@ -18,17 +17,7 @@ function Blog({ blog, setBlogs, userID }) {
   };
 
   const handleIncreaseLikes = async () => {
-    const updatedBlog = {
-      ...blog,
-      user: blog.user.id,
-      likes: blog.likes + 1
-    };
-
-    const { likes } = await update(updatedBlog);
-
-    setBlogs((prevBlogs) =>
-      prevBlogs.map((b) => (b.id === blog.id ? { ...b, likes } : b))
-    );
+    likeBlogMutation.mutate({ ...blog, likes: blog.likes + 1 });
   };
 
   const handleRemove = async () => {
@@ -37,13 +26,7 @@ function Blog({ blog, setBlogs, userID }) {
         `Remove blog ${blog.title} by ${blog.author}?`
       );
 
-      if (isConfirmed) {
-        setBlogs((prevBlogs) => prevBlogs.filter((b) => b.id !== blog.id));
-
-        await remove(blog.id);
-      }
-    } else {
-      setNotification('Error: You are not allowed to remove this blog', 3);
+      if (isConfirmed) removeBlogMutation.mutate(blog.id);
     }
   };
 

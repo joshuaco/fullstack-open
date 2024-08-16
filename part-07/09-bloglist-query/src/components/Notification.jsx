@@ -3,7 +3,7 @@ import NotificationContext from '../contexts/NotificationContext';
 
 /* eslint-disable react/prop-types */
 function Notification() {
-  const [notification] = useContext(NotificationContext);
+  const { notification } = useContext(NotificationContext);
 
   const errorStyles = {
     color: 'tomato',
