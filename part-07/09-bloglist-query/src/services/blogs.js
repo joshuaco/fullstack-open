@@ -17,6 +17,15 @@ export const getAll = async () => {
   }
 };
 
+export const getBlog = async (id) => {
+  try {
+    const response = await axios.get(`${URL}/${id}`);
+    return response.data;
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
 export const create = async (newBlog, user) => {
   const config = {
     headers: { Authorization: token }

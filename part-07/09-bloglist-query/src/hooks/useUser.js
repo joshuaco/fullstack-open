@@ -8,7 +8,7 @@ export const useUser = () => {
   const { user, userDispatch } = useContext(UserContext);
   const { setNotification } = useContext(NotificationContext);
 
-  const loggedUSer = () => {
+  const loggedUser = () => {
     const loggedUserJSON = window.localStorage.getItem('blogUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
@@ -36,5 +36,5 @@ export const useUser = () => {
     setToken(null);
   };
 
-  return { user, loggedUSer, loginUser, logoutUser };
+  return { user, loggedUser, loginUser, logoutUser };
 };

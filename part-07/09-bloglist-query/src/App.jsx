@@ -1,8 +1,11 @@
 import { useUser } from './hooks/useUser';
-import Content from './components/Content';
+import { Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
-import Notification from './components/Notification';
+import Header from './components/Header';
+import Content from './components/Content';
 import Togglable from './components/Togglable';
+import Users from './components/Users';
+import User from './components/User';
 import './App.css';
 
 function App() {
@@ -10,17 +13,25 @@ function App() {
 
   return (
     <div>
-      <h1>Blogs</h1>
+      <Header />
 
-      <Notification />
+      <Routes>
+        <Route path="/users" element={<Users />} />
+        <Route path="/users/:username" element={<User />} />
 
-      {user === null ? (
-        <Togglable buttonLabel="login">
-          <Login />
-        </Togglable>
-      ) : (
-        <Content />
-      )}
+        <Route
+          path="/"
+          element={
+            user ? (
+              <Content />
+            ) : (
+              <Togglable buttonLabel="login">
+                <Login />
+              </Togglable>
+            )
+          }
+        />
+      </Routes>
     </div>
   );
 }

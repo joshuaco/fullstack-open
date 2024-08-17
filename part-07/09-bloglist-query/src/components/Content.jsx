@@ -7,7 +7,7 @@ import BlogForm from './BlogForm';
 import Togglable from './Togglable';
 
 function Content() {
-  const { logoutUser, user } = useUser();
+  const { user } = useUser();
   const { blogs } = useBlogs();
   const blogFormRef = useRef();
 
@@ -17,12 +17,6 @@ function Content() {
 
   return (
     <div>
-      {user && (
-        <p>
-          Welcome {user.name} <button onClick={logoutUser}>logout</button>
-        </p>
-      )}
-      <hr />
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <BlogForm toggleRef={blogFormRef} />
       </Togglable>
