@@ -47,6 +47,19 @@ blogRouter.put('/:id', userExtractor, async (request, response, next) => {
   response.status(200).json(updatedBlog);
 });
 
+// Blog Comments
+
+blogRouter.put('/:id/comments', userExtractor, async (request, response) => {
+  const body = request.body;
+  const blog = await Blog.findById(request.params.id);
+  const updatedBlog = new Blog(blog);
+
+  updatedBlog.comments.push(body.comments);
+
+  await Blog.findByIdAndUpdate(request.params.id, updatedBlog, { new: true });
+  response.status(200).json(updatedBlog);
+});
+
 blogRouter.delete('/:id', userExtractor, async (request, response) => {
   const user = request.user;
   const blog = await Blog.findById(request.params.id);
