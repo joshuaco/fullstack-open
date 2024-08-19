@@ -27,7 +27,7 @@ export const useBlogs = () => {
   const likeBlogMutation = useMutation({
     mutationFn: update,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      queryClient.invalidateQueries({ queryKey: ['blog'] });
     },
     onError: () => {
       setNotification('Authentication error', 3);

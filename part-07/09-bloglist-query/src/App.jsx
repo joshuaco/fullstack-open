@@ -6,6 +6,7 @@ import Content from './components/Content';
 import Togglable from './components/Togglable';
 import Users from './components/Users';
 import User from './components/User';
+import Blog from './components/Blog';
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/users" element={<Users />} />
         <Route path="/users/:username" element={<User />} />
+        <Route path="/blogs/:id" element={<Blog />} />
 
         <Route
           path="/"

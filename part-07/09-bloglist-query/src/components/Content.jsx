@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useRef } from 'react';
-import { useUser } from '../hooks/useUser';
+import { Link } from 'react-router-dom';
 import { useBlogs } from '../hooks/useBlogs';
-import Blog from './Blog';
 import BlogForm from './BlogForm';
 import Togglable from './Togglable';
 
 function Content() {
-  const { user } = useUser();
   const { blogs } = useBlogs();
   const blogFormRef = useRef();
 
@@ -21,9 +19,13 @@ function Content() {
         <BlogForm toggleRef={blogFormRef} />
       </Togglable>
 
-      {orderedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} userID={user.id} />
-      ))}
+      <ul style={{ listStyle: 'none', textAlign: 'left', padding: 0 }}>
+        {orderedBlogs.map((blog) => (
+          <li key={blog.id}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
