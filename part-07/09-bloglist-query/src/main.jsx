@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { UserProvider } from './contexts/UserContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const queryClient = new QueryClient();
 

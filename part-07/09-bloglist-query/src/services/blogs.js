@@ -52,6 +52,18 @@ export const update = async (blog) => {
   return response.data;
 };
 
+export const sendComment = async (comment, id) => {
+  const config = {
+    headers: { Authorization: token }
+  };
+
+  const newComment = {
+    comments: comment
+  };
+
+  await axios.put(`${URL}/${id}/comments`, newComment, config);
+};
+
 export const remove = async (id) => {
   const config = {
     headers: { Authorization: token }

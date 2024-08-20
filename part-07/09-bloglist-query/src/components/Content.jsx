@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useBlogs } from '../hooks/useBlogs';
 import BlogForm from './BlogForm';
 import Togglable from './Togglable';
+import { Badge, ListGroup } from 'react-bootstrap';
 
 function Content() {
   const { blogs } = useBlogs();
@@ -19,13 +20,18 @@ function Content() {
         <BlogForm toggleRef={blogFormRef} />
       </Togglable>
 
-      <ul style={{ listStyle: 'none', textAlign: 'left', padding: 0 }}>
+      <ListGroup as="ul" variant="flush" className="mt-3">
         {orderedBlogs.map((blog) => (
-          <li key={blog.id}>
+          <ListGroup.Item
+            as="li"
+            className="d-flex justify-content-between align-items-center"
+            key={blog.id}
+          >
             <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-          </li>
+            <Badge bg="primary">{blog.likes}</Badge>
+          </ListGroup.Item>
         ))}
-      </ul>
+      </ListGroup>
     </div>
   );
 }

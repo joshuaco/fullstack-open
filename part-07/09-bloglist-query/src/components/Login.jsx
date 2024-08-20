@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { useUser } from '../hooks/useUser';
+import { Button, Form } from 'react-bootstrap';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -22,30 +23,30 @@ function Login() {
     <div>
       <h2>Login</h2>
 
-      <form onSubmit={handleLogin}>
-        <div className="field">
-          <input
+      <Form onSubmit={handleLogin}>
+        <Form.Group className="mb-1 w-25 mx-auto" controlId="username">
+          <Form.Control
             type="text"
             data-testid="username"
-            id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="username"
           />
-        </div>
-        <div className="field">
-          <input
+        </Form.Group>
+        <Form.Group className="mb-2 w-25 mx-auto" controlId="password">
+          <Form.Control
             type="password"
             data-testid="password"
             name="password"
-            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="password"
           />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+        </Form.Group>
+        <Button type="submit" className="w-25 mt-2">
+          Login
+        </Button>
+      </Form>
     </div>
   );
 }

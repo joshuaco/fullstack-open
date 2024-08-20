@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { create, getAll, remove, update } from '../services/blogs';
+import { create, getAll, remove, sendComment, update } from '../services/blogs';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import NotificationContext from '../contexts/NotificationContext';
 
@@ -34,6 +34,17 @@ export const useBlogs = () => {
     }
   });
 
+  const commentBlogMutation = useMutation({
+    mutationFn: ({ comment, id }) => sendComment(comment, id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blog'] });
+      setNotification('New comment added', 3);
+    },
+    onError: () => {
+      setNotification('Error', 3);
+    }
+  });
+
   const removeBlogMutation = useMutation({
     mutationFn: remove,
     onSuccess: () => {
@@ -45,5 +56,11 @@ export const useBlogs = () => {
     }
   });
 
-  return { blogs, newBlogMutation, likeBlogMutation, removeBlogMutation };
+  return {
+    blogs,
+    newBlogMutation,
+    likeBlogMutation,
+    commentBlogMutation,
+    removeBlogMutation
+  };
 };

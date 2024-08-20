@@ -13,7 +13,7 @@ function App() {
   const { user } = useUser();
 
   return (
-    <div>
+    <div className="container">
       <Header />
 
       <Routes>

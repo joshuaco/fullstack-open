@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, forwardRef, useImperativeHandle } from 'react';
+import { Button } from 'react-bootstrap';
 
 const Togglable = forwardRef(function TogglableComponent(props, refs) {
   const [visible, setVisible] = useState(false);
@@ -20,11 +21,19 @@ const Togglable = forwardRef(function TogglableComponent(props, refs) {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <Button onClick={toggleVisibility} className="w-25 mt-3">
+          {props.buttonLabel}
+        </Button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
+        <Button
+          onClick={toggleVisibility}
+          variant="danger"
+          className="mt-2 w-25"
+        >
+          cancel
+        </Button>
       </div>
     </div>
   );
