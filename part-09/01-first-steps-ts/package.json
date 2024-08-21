@@ -1,0 +1,19 @@
+{
+  "name": "01-first-steps-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "ts-node": "ts-node",
+    "calculate": "ts-node calculator.ts",
+    "multiply": "ts-node multiplier.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "22.5.0",
+    "ts-node": "10.9.2",
+    "typescript": "5.5.4"
+  }
+}
