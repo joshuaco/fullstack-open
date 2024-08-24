@@ -17,7 +17,7 @@ const calculateExercises = (dailyHrs: number[], target: number): Result => {
 
   const rating = Math.round((average / target) * 10);
 
-  let ratingDescription: string;
+  let ratingDescription = '';
 
   if (rating < 5) {
     ratingDescription = 'poor';
@@ -40,4 +40,9 @@ const calculateExercises = (dailyHrs: number[], target: number): Result => {
   };
 };
 
-console.log(calculateExercises([3, 1, 1.5, 2.5, 3, 2, 0], 2));
+const dailyHrs = process.argv
+  .slice(3, process.argv.length)
+  .map((hours) => Number(hours));
+const target = Number(process.argv[2]);
+
+console.log(calculateExercises(dailyHrs, target));

@@ -19,7 +19,22 @@ const calculateBMI = (weight: number, height: number): string => {
   }
   if (bmi >= 35) {
     return 'Obese (Very Severe Obesity)';
+  } else {
+    throw new Error('Invalid input');
   }
 };
 
-console.log(calculateBMI(95, 180));
+const weight = Number(process.argv[2]);
+const height = Number(process.argv[3]);
+
+try {
+  console.log(calculateBMI(weight, height));
+} catch (error: unknown) {
+  let errorMessage = 'Something went wrong: ';
+
+  if (error instanceof Error) {
+    errorMessage += error.message;
+  }
+
+  console.log(errorMessage);
+}
