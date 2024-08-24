@@ -1,12 +1,19 @@
 {
-  "name": "02-BMI",
+  "name": "02-bmi",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "calculate": "ts-node bmiCalculator.ts",
+    "exercise": "ts-node exerciseCalculator.ts"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "22.5.0",
+    "ts-node": "10.9.2",
+    "typescript": "5.5.4"
+  },
+  "packageManager": "pnpm@9.8.0+sha512.8e4c3550fb500e808dbc30bb0ce4dd1eb614e30b1c55245f211591ec2cdf9c611cabd34e1364b42f564bd54b3945ed0f49d61d1bbf2ec9bd74b866fcdc723276"
 }
