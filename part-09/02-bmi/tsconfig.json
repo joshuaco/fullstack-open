@@ -9,7 +9,6 @@
     "noUnusedParameters": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "esModuleInterop": true,
-    "declaration": true
+    "esModuleInterop": true
   }
 }
