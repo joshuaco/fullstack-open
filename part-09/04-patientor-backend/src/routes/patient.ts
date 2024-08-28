@@ -4,7 +4,13 @@ import patientService from '../services/patientService';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-  res.status(200).json(patientService.getPatients());
+  try {
+    res.json(patientService.getPatients());
+    console.log('Fetched data');
+  } catch (error) {
+    console.log({ error });
+    res.status(400).end();
+  }
 });
 
 export default router;
