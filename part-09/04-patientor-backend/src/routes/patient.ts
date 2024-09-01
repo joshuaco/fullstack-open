@@ -1,15 +1,28 @@
 import express from 'express';
 import patientService from '../services/patientService';
+import toNewPatientEntry from '../utils';
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
   try {
     res.json(patientService.getPatients());
-    console.log('Fetched data');
   } catch (error) {
-    console.log({ error });
+    console.log(error);
     res.status(400).end();
+  }
+});
+
+router.post('/', (req, res) => {
+  try {
+    const newPatientEntry = toNewPatientEntry(req.body);
+    const addedPatient = patientService.addPatient(newPatientEntry);
+
+    res.status(201).json(addedPatient);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(401).send(error.message);
+    }
   }
 });
 

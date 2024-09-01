@@ -7,7 +7,6 @@ router.get('/', (_req, res) => {
     console.log('Someone pinged here');
     res.send('Pong!');
   } catch (error) {
-    console.log('Pong error');
     res.status(400).json({ error });
   }
 });
