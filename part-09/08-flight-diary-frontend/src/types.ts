@@ -1,3 +1,5 @@
+export type NewDiaryEntry = Omit<DiaryEntry, 'id'>;
+
 export interface DiaryEntry {
   id: number;
   date: string;
@@ -6,4 +8,17 @@ export interface DiaryEntry {
   visibility: string;
 }
 
-export type NewDiaryEntry = Omit<DiaryEntry, 'id'>;
+export enum Weather {
+  SUNNY = 'sunny',
+  CLOUDY = 'cloudy',
+  RAINY = 'rainy',
+  STORMY = 'stormy',
+  WINDY = 'windy'
+}
+
+export enum Visibility {
+  GREAT = 'great',
+  GOOD = 'good',
+  OK = 'ok',
+  POOR = 'poor'
+}
