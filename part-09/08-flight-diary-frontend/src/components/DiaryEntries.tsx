@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react';
 import { DiaryEntry } from '../types';
-import diaryService from '../services/diaryService';
 
-function DiaryEntries() {
-  const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
+interface DiaryEntriesProps {
+  diaries: DiaryEntry[];
+}
 
-  useEffect(() => {
-    diaryService.getAllDiaries().then((data) => setDiaries(data));
-  }, []);
-
+function DiaryEntries({ diaries }: DiaryEntriesProps) {
   return (
     <>
+      <h3>My diary entries</h3>
+
       {diaries.map((diary) => (
         <div key={diary.id}>
           <h3>
@@ -22,6 +20,7 @@ function DiaryEntries() {
           <p>
             Weather: <b>{diary.weather}</b>
           </p>
+          <p>{diary.comment}</p>
         </div>
       ))}
     </>
