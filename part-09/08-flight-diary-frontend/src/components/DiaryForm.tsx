@@ -57,23 +57,111 @@ function DiaryForm({ setDiaries }: DiaryFormProps) {
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
-        <div>
-          <label htmlFor='weather'>weather</label>
-          <input
-            type='text'
-            id='weather'
-            value={weather}
-            onChange={(e) => setWeather(e.target.value)}
-          />
+        <div style={{ display: 'flex' }}>
+          <label htmlFor='weather'>weather:</label>
+          <div>
+            <input
+              type='radio'
+              id='weather-sunny'
+              value='sunny'
+              checked={weather === 'sunny'}
+              onChange={(e) => setWeather(e.target.value)}
+            />
+            <label htmlFor='weather-sunny'>sunny</label>
+          </div>
+          <div>
+            <input
+              type='radio'
+              id='weather-cloudy'
+              value='cloudy'
+              checked={weather === 'cloudy'}
+              onChange={(e) => setWeather(e.target.value)}
+            />
+            <label htmlFor='weather-cloudy'>cloudy</label>
+          </div>
+          <div>
+            <input
+              type='radio'
+              id='weather-rainy'
+              value='rainy'
+              checked={weather === 'rainy'}
+              onChange={(e) => setWeather(e.target.value)}
+            />
+            <label htmlFor='weather-rainy'>rainy</label>
+          </div>
+          <div>
+            <input
+              type='radio'
+              id='weather-stormy'
+              value='stormy'
+              checked={weather === 'stormy'}
+              onChange={(e) => setWeather(e.target.value)}
+            />
+            <label htmlFor='weather-stormy'>stormy</label>
+          </div>
+          <div>
+            <input
+              type='radio'
+              id='weather-windy'
+              value='windy'
+              checked={weather === 'windy'}
+              onChange={(e) => setWeather(e.target.value)}
+            />
+            <label htmlFor='weather-windy'>windy</label>
+          </div>
         </div>
-        <div>
-          <label htmlFor='visibility'>visibility</label>
-          <input
-            type='text'
-            id='visibility'
-            value={visibility}
-            onChange={(e) => setVisibility(e.target.value)}
-          />
+        <div style={{ display: 'flex' }}>
+          <label htmlFor='visibility'>visibility:</label>
+          <div>
+            <input
+              type='radio'
+              id='visibility-great'
+              value='great'
+              checked={visibility === 'great'}
+              onChange={(e) => setVisibility(e.target.value)}
+            />
+            <label htmlFor='visibility-great'>great</label>
+          </div>
+          <div>
+            <input
+              type='radio'
+              id='visibility-good'
+              value='good'
+              checked={visibility === 'good'}
+              onChange={(e) => setVisibility(e.target.value)}
+            />
+            <label htmlFor='visibility-good'>good</label>
+          </div>
+          <div>
+            <input
+              type='radio'
+              id='visibility-ok'
+              value='ok'
+              checked={visibility === 'ok'}
+              onChange={(e) => setVisibility(e.target.value)}
+            />
+            <label htmlFor='visibility-ok'>ok</label>
+          </div>
+          <div>
+            <input
+              type='radio'
+              id='visibility-poor'
+              value='poor'
+              checked={visibility === 'poor'}
+              onChange={(e) => setVisibility(e.target.value)}
+            />
+            <label htmlFor='visibility-poor'>poor</label>
+          </div>
+          <div>
+            <input
+              type='radio'
+              id='visibility-unknown'
+              value='unknown'
+              checked={visibility === 'unknown'}
+              onChange={(e) => setVisibility(e.target.value)}
+            />
+            <label htmlFor='visibility-unknown'>unknown</label>
+          </div>
         </div>
         <div>
           <label htmlFor='comment'>comment</label>
