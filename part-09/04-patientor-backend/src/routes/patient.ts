@@ -13,6 +13,17 @@ router.get('/', (_req, res) => {
   }
 });
 
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  try {
+    res.json(patientService.findByID(id));
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json(error.message);
+    }
+  }
+});
+
 router.post('/', (req, res) => {
   try {
     const newPatientEntry = toNewPatientEntry(req.body);

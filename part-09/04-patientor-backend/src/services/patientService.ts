@@ -1,8 +1,8 @@
 import patients from '../data/patients';
 import { v4 as uuidv4 } from 'uuid';
-import { NewPatientEntry, Patient, PatientWithoutSSN } from '../types';
+import { NewPatientEntry, Patient, NonSensitivePatient } from '../types';
 
-const getPatients = (): PatientWithoutSSN[] => {
+const getPatients = (): NonSensitivePatient[] => {
   return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
     id,
     name,
@@ -10,6 +10,13 @@ const getPatients = (): PatientWithoutSSN[] => {
     gender,
     occupation
   }));
+};
+
+const findByID = (id: string): Patient => {
+  const patient = patients.find((p) => p.id === id);
+
+  if (patient) return patient;
+  throw new Error("Patient doesn't exists");
 };
 
 const addPatient = (patientEntry: NewPatientEntry): Patient => {
@@ -22,4 +29,4 @@ const addPatient = (patientEntry: NewPatientEntry): Patient => {
   return newPatient;
 };
 
-export default { getPatients, addPatient };
+export default { getPatients, findByID, addPatient };
